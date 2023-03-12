@@ -99,18 +99,19 @@ def inject(segments, snippet, injection_location, output_files):
     (nonvul_snippet, vul_snippet) = snippet
     (output_file, vulnerable_output_file) = output_files
     segment_index = -1
+    indent = ' '*config['INDENT_SIZE'];
     print(f"/* Injection at location {injection_location} */", file=output_file)
     print(f"/* Injection at location {injection_location} */", file=vulnerable_output_file)
     for segment in segments:
         if segment_index == injection_location:
-            print("/* Inserted block */", file=output_file)
-            print("/* Inserted block */", file=vulnerable_output_file)
+            print("{indent}/* Inserted block */", file=output_file)
+            print("{indent}/* Inserted block */", file=vulnerable_output_file)
             for line in nonvul_snippet:
-                print(line, end='', file=output_file)
+                print(indent + line, end='', file=output_file)
             for line in vul_snippet:
-                print(line, end='', file=vulnerable_output_file)
-            print("/* End of injection */", file=output_file)
-            print("/* End of injection */", file=vulnerable_output_file)
+                print(indent + line, end='', file=vulnerable_output_file)
+            print("{indent}/* End of injection */", file=output_file)
+            print("{indent}/* End of injection */", file=vulnerable_output_file)
         for line in segment:
             print(line, file=output_file, end='')
         for line in segment:
